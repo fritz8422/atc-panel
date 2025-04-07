@@ -222,10 +222,28 @@
   </div>
 </div>
 
-      <div class="card">
-        <h2>Złożone plany lotu</h2>
-        <div id="plansOutput"></div>
-      </div>
+<div class="card">
+  <h2>📜 Zgłoszone plany lotu</h2>
+  <ul id="plansList">Ładowanie planów...</ul>
+</div>
+
+<script>
+  fetch("https://3f7c8888-058b-4206-9ea9-fe3178d00585-00-2sld38k0w8soq.riker.replit.dev/api/flightplans")
+    .then(res => res.json())
+    .then(plans => {
+      const list = document.getElementById("plansList");
+      list.innerHTML = "";
+      plans.reverse().forEach(plan => {
+        const item = document.createElement("li");
+        item.textContent = `${plan.callsign}: ${plan.departure} → ${plan.arrival} o ${plan.departureTime} (${plan.aircraft}) - ${plan.submittedBy}`;
+        list.appendChild(item);
+      });
+    })
+    .catch(() => {
+      document.getElementById("plansList").innerText = "Błąd ładowania planów.";
+    });
+</script>
+
     </div>
   </div>
 
