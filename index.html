@@ -6,7 +6,7 @@
   <title>Panel ATC</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       background-color: #344f68;
       color: white;
       margin: 0;
@@ -167,37 +167,6 @@
       </script>
       
 
-<!-- Struktura kontroli -->
-<div class="structure-card card" style="display: flex; justify-content: space-between; align-items: flex-start;">
-  <div style="flex: 1; font-size: 0.9rem;">
-    <h2>Struktura kontroli:</h2>
-    <div>🟦Warszawa Radar: Kontroluje przestrzeń powietrzną na dużych wysokościach, zarządzając lotami między regionami.</div>
-    <div>🟩Kraków Approach: Kieruje lotami z wyższych wysokości do podejścia w pobliżu lotniska Kraków.</div>
-    <div>🟩Kraków Tower: Odpowiada za starty i lądowania na lotnisku Kraków oraz ruch na płycie lotniska.</div>
-    <div>🟧Nowy Targ Radio: Koordynuje ruch powietrzny w okolicach Nowego Targu, szczególnie na niskich wysokościach.</div>
-    <div>🟧Nowy Targ Ground: Zarządza ruchem i obsługą naziemną statków na lotnisku Nowy Targ.</div>
-  </div>
-
-  <!-- Notatki kontrolera po prawej stronie -->
-  <div id="notes-section" style="flex-basis: 300px; margin-left: 100px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccc; margin-top: 20px;">
-    <h3 style="color: black;">Notatki kontrolera</h3>
-    <textarea id="controller-notes" rows="5" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Wpisz notatki tutaj..."></textarea>
-  </div>
-</div>
-
-      <div class="card">
-        <h2>Depesza METAR</h2>
-        <textarea class="textarea" id="metarInput" placeholder="Wprowadź depeszę METAR..."></textarea>
-        <button class="button" onclick="sendMetarWebhook()">Wyślij do Discorda</button>
-      </div>
-
-      <div class="card">
-        <h2>Aktualna pogoda - Nowy Targ</h2>
-        <div id="weatherInfo">
-          <p>Ładowanie danych...</p>
-        </div>
-      </div>
-
       <div class="card notam-card">
         <div>
           <h2>NOTAM</h2>
@@ -216,7 +185,42 @@
           <button class="button" onclick="sendNotamWebhook()">Wyślij NOTAM</button>
         </div>
       </div>
+    
+      <div style="display: flex; gap: 20px; justify-content: space-between;">
+        <!-- Pierwsza karta -->
+        <div class="card" style="flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+          <h2>Depesza METAR</h2>
+          <textarea class="textarea" id="metarInput" placeholder="Wprowadź depeszę METAR..." style="width: 80%; height: 200px;"></textarea>
+          <br>
+          <button class="button" onclick="sendMetarWebhook()">Wyślij do Discorda</button>
+        </div>
       
+        <!-- Druga karta -->
+        <div class="card" style="flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+          <h2>Aktualna pogoda - Nowy Targ</h2>
+          <div id="weatherInfo">
+            <p>Ładowanie danych...</p>
+          </div>
+        </div>
+      </div>
+    
+<!-- Struktura kontroli -->
+<div class="structure-card card" style="display: flex; justify-content: space-between; align-items: flex-start;">
+  <div style="flex: 1; font-size: 0.9rem;">
+    <h2>Struktura kontroli:</h2>
+    <div>🟦Warszawa Radar: Kontroluje przestrzeń powietrzną na dużych wysokościach, zarządzając lotami między regionami.</div>
+    <div>🟩Kraków Approach: Kieruje lotami z wyższych wysokości do podejścia w pobliżu lotniska Kraków.</div>
+    <div>🟩Kraków Tower: Odpowiada za starty i lądowania na lotnisku Kraków oraz ruch na płycie lotniska.</div>
+    <div>🟧Nowy Targ Radio: Koordynuje ruch powietrzny w okolicach Nowego Targu, szczególnie na niskich wysokościach.</div>
+    <div>🟧Nowy Targ Ground: Zarządza ruchem i obsługą naziemną statków na lotnisku Nowy Targ.</div>
+  </div>
+
+  <!-- Notatki kontrolera po prawej stronie -->
+  <div id="notes-section" style="flex-basis: 300px; margin-left: 100px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccc; margin-top: 20px;">
+    <h3 style="color: black;">Notatki kontrolera</h3>
+    <textarea id="controller-notes" rows="5" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Wpisz notatki tutaj..."></textarea>
+  </div>
+</div>
 
       <div class="card">
         <h2>Złożone plany lotu</h2>
