@@ -307,10 +307,10 @@
     setInterval(updateClock, 1000);
   }
 
-  // Funkcja wysyłająca webhook dla METAR
+  // Funkcja wysyłająca webhook dla METAR (jako codeblock)
   function sendMetarWebhook() {
     const metarData = document.getElementById("metarInput").value;
-    const webhookUrl = 'https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL';
+    const webhookUrl = 'TWÓJ_WEBHOOK_URL_DISCORD';
     
     fetch(webhookUrl, {
       method: 'POST',
@@ -318,7 +318,7 @@
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        content: `Depesza METAR:\n${metarData}`,
+        content: `\`\`\`Depesza METAR:\n${metarData}\`\`\``,
       }),
     })
     .then(response => response.json())
@@ -330,16 +330,17 @@
     });
   }
 
-  // Funkcja wysyłająca webhook dla NOTAM
+  // Funkcja wysyłająca webhook dla NOTAM (jako codeblock)
   function sendNotamWebhook() {
     const notamSelect = document.getElementById("notamSelect").value;
     const otherNotam = document.getElementById("otherNotam").value;
-    const webhookUrl = 'https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL';
+    const webhookUrl = 'TWÓJ_WEBHOOK_URL_DISCORD';
     
-    let notamMessage = `NOTAM:\n${notamSelect}`;
+    let notamMessage = `\`\`\`NOTAM:\n${notamSelect}`;
     if (notamSelect === "OTHER" && otherNotam.trim() !== "") {
       notamMessage += `\n${otherNotam}`;
     }
+    notamMessage += '\`\`\`';
 
     fetch(webhookUrl, {
       method: 'POST',
@@ -359,6 +360,7 @@
     });
   }
 </script>
+
 
 
 </body>
