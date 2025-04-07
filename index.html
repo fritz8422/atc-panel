@@ -310,7 +310,7 @@
   // Funkcja wysyłająca webhook dla METAR (jako codeblock)
   function sendMetarWebhook() {
     const metarData = document.getElementById("metarInput").value;
-    const webhookUrl = 'TWÓJ_WEBHOOK_URL_DISCORD';
+    const webhookUrl = 'https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL';
     
     fetch(webhookUrl, {
       method: 'POST',
@@ -334,7 +334,7 @@
   function sendNotamWebhook() {
     const notamSelect = document.getElementById("notamSelect").value;
     const otherNotam = document.getElementById("otherNotam").value;
-    const webhookUrl = 'TWÓJ_WEBHOOK_URL_DISCORD';
+    const webhookUrl = 'https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL';
     
     let notamMessage = `\`\`\`NOTAM:\n${notamSelect}`;
     if (notamSelect === "OTHER" && otherNotam.trim() !== "") {
