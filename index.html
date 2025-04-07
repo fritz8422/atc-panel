@@ -218,44 +218,18 @@
   <!-- Notatki kontrolera po prawej stronie -->
   <div id="notes-section" style="flex-basis: 300px; margin-left: 100px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccc; margin-top: 20px;">
     <h3 style="color: black;">Notatki kontrolera</h3>
-    <textarea id="controller-notes" rows="5" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Wpisz notatki tutaj..."></textarea>
+    <textarea id="controller-notes" rows="5" style="width: 80%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Wpisz notatki tutaj..."></textarea>
   </div>
 </div>
 
-<div id="flightPlans" class="container">
-  <h2>📋 Plany lotu</h2>
-</div>
-
-
+      <div class="card">
+        <h2>Złożone plany lotu</h2>
+        <div id="plansOutput"></div>
+      </div>
     </div>
   </div>
 
   <script>
-     async function fetchFlightPlans() {
-    const res = await fetch("https://3f7c8888-058b-4206-9ea9-fe3178d00585-00-2sld38k0w8soq.riker.replit.dev/api/flightplans");
-    const plans = await res.json();
-
-    const container = document.getElementById("flightPlans");
-    container.innerHTML = ""; // Czyścimy
-
-    plans.forEach(plan => {
-      const el = document.createElement("div");
-      el.className = "card";
-      el.innerHTML = `
-        <h3>🛫 ${plan.callsign}</h3>
-        <p><strong>Odlot:</strong> ${plan.departure}</p>
-        <p><strong>Przylot:</strong> ${plan.arrival}</p>
-        <p><strong>Typ:</strong> ${plan.aircraft}</p>
-        <p><strong>Godzina:</strong> ${plan.departureTime}</p>
-        <p><strong>Zgłoszone przez:</strong> ${plan.submittedBy}</p>
-      `;
-      container.appendChild(el);
-    });
-  }
-
-  // Odświeżaj co 10 sekund
-  setInterval(fetchFlightPlans, 10000);
-  fetchFlightPlans();
     const correctKey = "TOPR-Sigma1";
   
     function login() {
