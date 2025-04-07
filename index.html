@@ -131,15 +131,158 @@
 </head>
 <body>
 
-  <!-- Login Screen -->
-  <div id="loginScreen" class="login-container">
-    <div class="login-card">
-      <h2>Panel Logowania</h2>
-      <input type="text" id="accessKey" class="login-input" placeholder="Wprowadź klucz dostępu" />
-      <button class="login-button" onclick="login()">Zaloguj</button>
-    </div>
-  </div>
-
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #0d1b2a;
+          color: #fff;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          min-height: 100vh;
+        }
+      
+        .login-container {
+          width: 100%;
+          max-width: 900px;
+          padding: 40px 20px;
+        }
+      
+        .login-card{
+          background-color: #1b263b;
+          padding: 80PX;
+          border-radius: 12px;
+          box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+          margin-left: 10px;
+          margin-right: 10px;
+          margin-bottom: 20px;
+          height: 500px;
+        }
+      
+        h2 {
+          text-align: center;
+          margin-bottom: 20px;
+          color: #f3f3f3;
+        }
+      
+        input {
+          width: 110%;
+          padding: 12px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 8px;
+          font-size: 16px;
+          background-color: #415a77;
+          color: #fff;
+        }
+      
+        input::placeholder {
+          color: #cbd5e1;
+        }
+      
+        button {
+          width: 100%;
+          padding: 12px;
+          background-color: #00b4d8;
+          border: none;
+          border-radius: 8px;
+          color: white;
+          font-size: 16px;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+      
+        button:hover {
+          background-color: #0096c7;
+        }
+      
+        #statusMsg {
+          text-align: center;
+          margin-top: 10px;
+          color: #90ee90;
+        }
+      </style>
+      
+      <!-- Login Screen -->
+      <div id="loginScreen" class="login-container">
+        <br>
+        <!-- Logowanie -->
+        <div class="login-card">
+            <h1>SYSTEM KONTROLI OPERACYJNEJ LOTÓW</h1>
+            <h4>Złóż plan lotu lub zaloguj się jako kontroler</h4> 
+          <h2 style="color: green;">Panel logowania kontrolera</h2>
+          <input type="text" id="accessKey" class="login-input" placeholder="Wprowadź klucz dostępu" />
+          <button class="login-button" onclick="login()">Zaloguj</button>
+        </div>
+      
+        <!-- Formularz -->
+        <div class="login-card">
+          <h2>Zgłoś Plan Lotu</h2>
+          <form id="flightPlanForm">
+            <input type="text" name="callsign" placeholder="Callsign" required><br>
+            <input type="text" name="departure" placeholder="Lotnisko odlotu (ICAO)" required><br>
+            <input type="text" name="arrival" placeholder="Lotnisko przylotu (ICAO)" required><br>
+            <input type="text" name="aircraft" placeholder="Typ statku powietrznego" required><br>
+            <input type="text" name="departureTime" placeholder="Czas startu (np. 12:30Z)" required><br>
+            <input type="text" name="altitude" placeholder="Planowana wysokość (np. FL120)" required><br>
+            <input type="text" name="remarks" placeholder="Uwagi (Remarks)"><br>
+            <button type="submit">Zgłoś Plan</button>
+          </form>
+          <p id="statusMsg"></p>
+        </div>
+      </div>
+      
+      <script>
+        const form = document.getElementById("flightPlanForm");
+        const statusMsg = document.getElementById("statusMsg");
+      
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+      
+          const payload = {
+            username: "Flight Plan Logger",
+            embeds: [{
+              title: "📜 Nowy Plan Lotu",
+              color: 3447003,
+              fields: [
+                { name: "📡 Callsign", value: data.callsign, inline: true },
+                { name: "🏁 Odlot", value: data.departure, inline: true },
+                { name: "🎯 Przylot", value: data.arrival, inline: true },
+                { name: "✈️ Statek powietrzny", value: data.aircraft, inline: true },
+                { name: "🕒 Czas startu", value: data.departureTime, inline: true },
+                { name: "⛰️ Wysokość", value: data.altitude, inline: true },
+                { name: "📝 Remarks", value: data.remarks || "Brak", inline: false }
+              ],
+              footer: {
+                text: "Plan zgłoszony przez formularz WWW"
+              }
+            }]
+          };
+      
+          try {
+            const res = await fetch("https://discord.com/api/webhooks/1357319507835617471/V_gC13Q8DY8QsgoWZZZLW005ckF6JCXK-b_7Mmyxuf8v1LgIZKXBO5VmTcB6s78yUOcV", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify(payload)
+            });
+      
+            if (res.ok) {
+              statusMsg.textContent = "✅ Plan lotu został zgłoszony!";
+              form.reset();
+            } else {
+              statusMsg.textContent = "❌ Błąd przy zgłaszaniu planu.";
+            }
+          } catch (err) {
+            statusMsg.textContent = "❌ Wystąpił błąd: " + err.message;
+          }
+        });
+      </script>
+      
   <!-- Main Content, initially hidden -->
   <div id="mainContent" style="display: none;">
     <div class="container">
@@ -222,12 +365,6 @@
   </div>
 </div>
 
-      <div class="card">
-        <h2>Złożone plany lotu</h2>
-        <div id="plansOutput"></div>
-      </div>
-    </div>
-  </div>
 
   <script>
     const correctKey = "TOPR-Sigma1";
@@ -275,18 +412,6 @@
   
     // Uruchom funkcję na przykład co 10 minut
     setInterval(getWeather, 10 * 60 * 1000); // 10 minut
-  
-    // Fetch flight plans (mocked example)
-    function getFlightPlans() {
-      // Mocking flight plans as an example
-      const plans = ["Plan 1", "Plan 2", "Plan 3"];
-      let flightPlansHtml = "<ul>";
-      plans.forEach(plan => {
-        flightPlansHtml += `<li>${plan}</li>`;
-      });
-      flightPlansHtml += "</ul>";
-      document.getElementById("flightPlans").innerHTML = flightPlansHtml;
-    }
   
     // Call the functions when the page loads
     window.onload = function() {
