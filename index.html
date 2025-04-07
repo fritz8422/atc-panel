@@ -101,45 +101,48 @@
       margin-top: 20px;
     }
 
-    /* Style for the login form */
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #1a202c;
-    }
+/* Style for the login form */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Wysokość ekranu */
+  background-color: #1a202c;
+}
 
-    .login-card {
-      background-color: #2d3748;
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      width: 300px;
-    }
+.login-card {
+  background-color: #2d3748;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Dodanie cienia do okna logowania */
+}
 
-    .login-input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-      background-color: #2d3748;
-      color: white;
-    }
+.login-input {
+  width: 100%; /* Pełna szerokość */
+  padding: 10px;
+  margin: 10px 0; /* Odpowiedni margines między elementami */
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #2d3748;
+  color: white;
+  box-sizing: border-box; /* Uwzględnia padding i border w szerokości */
+}
 
-    .login-button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+.login-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-    .login-button:hover {
-      background-color: #45a049;
-    }
+.login-button:hover {
+  background-color: #45a049;
+}
+
   </style>
 </head>
 <body>
@@ -218,7 +221,7 @@
   </div>
 
   <script>
-    const correctKey = "TOPR-Sigma1"; 
+    const correctKey = "12345"; // Klucz dostępu, który użytkownik musi wprowadzić
 
     function login() {
       const enteredKey = document.getElementById("accessKey").value;
