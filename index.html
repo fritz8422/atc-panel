@@ -169,15 +169,23 @@
         <div id="clock" class="clock"></div>
       </div>
 
-      <!-- Struktura kontroli -->
-      <div class="structure-card card">
-        <h2>Struktura kontroli:</h2>
-        <div style="font-size: 0.9rem;">🟦Warszawa Radar: Kontroluje przestrzeń powietrzną na dużych wysokościach, zarządzając lotami między regionami.</div>
-        <div style="font-size: 0.9rem;">🟩Kraków Approach: Kieruje lotami z wyższych wysokości do podejścia w pobliżu lotniska Kraków.</div>
-        <div style="font-size: 0.9rem;">🟩Kraków Tower: Odpowiada za starty i lądowania na lotnisku Kraków oraz ruch na płycie lotniska.</div>
-        <div style="font-size: 0.9rem;">🟧Nowy Targ Radio: Koordynuje ruch powietrzny w okolicach Nowego Targu, szczególnie na niskich wysokościach.</div>
-        <div style="font-size: 0.9rem;">🟧Nowy Targ Ground: Zarządza ruchem i obsługą naziemną statków na lotnisku Nowy Targ.</div>
-      </div>
+<!-- Struktura kontroli -->
+<div class="structure-card card" style="display: flex; justify-content: space-between; align-items: flex-start;">
+  <div style="flex: 1; font-size: 0.9rem;">
+    <h2>Struktura kontroli:</h2>
+    <div>🟦Warszawa Radar: Kontroluje przestrzeń powietrzną na dużych wysokościach, zarządzając lotami między regionami.</div>
+    <div>🟩Kraków Approach: Kieruje lotami z wyższych wysokości do podejścia w pobliżu lotniska Kraków.</div>
+    <div>🟩Kraków Tower: Odpowiada za starty i lądowania na lotnisku Kraków oraz ruch na płycie lotniska.</div>
+    <div>🟧Nowy Targ Radio: Koordynuje ruch powietrzny w okolicach Nowego Targu, szczególnie na niskich wysokościach.</div>
+    <div>🟧Nowy Targ Ground: Zarządza ruchem i obsługą naziemną statków na lotnisku Nowy Targ.</div>
+  </div>
+
+  <!-- Notatki kontrolera po prawej stronie -->
+  <div id="notes-section" style="flex-basis: 300px; margin-left: 100px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #ccc; margin-top: 20px;">
+    <h3 style="color: black;">Notatki kontrolera</h3>
+    <textarea id="controller-notes" rows="5" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" placeholder="Wpisz notatki tutaj..."></textarea>
+  </div>
+</div>
 
       <div class="card">
         <h2>Depesza METAR</h2>
@@ -221,7 +229,7 @@
   </div>
 
   <script>
-    const correctKey = "TOPR-Sigma1"; 
+    const correctKey = "TOPR-Sigma1";
 
     function login() {
       const enteredKey = document.getElementById("accessKey").value;
@@ -234,22 +242,38 @@
       }
     }
 
-    // Fetch weather data for Nowy Targ
-    function getWeather() {
-      fetch("https://wttr.in/Nowy%20Targ?format=j1")
-        .then(response => response.json())
-        .then(data => {
-          const weather = data.current_condition[0];
-          const weatherInfo = `
-            <p>Temperatura: ${weather.temp_C}°C</p>
-            <p>Wiatr: ${weather.windspeedKmph} km/h ${weather.winddir16Point}</p>
-            <p>Widoczność: ${weather.visibility} km</p>
-            <p>Opad: ${weather.precipMM} mm</p>
-            <p>Zachmurzenie: ${weather.cloudcover}%</p>
-          `;
-          document.getElementById("weatherInfo").innerHTML = weatherInfo;
-        });
-    }
+// Fetch weather data for Nowy Targ
+function getWeather() {
+  fetch("https://wttr.in/Nowy%20Targ?format=j1")
+    .then(response => response.json())
+    .then(data => {
+      const weather = data.current_condition[0];
+      
+      // Pobierz czas załadowania strony
+      const loadTime = new Date(performance.timing.navigationStart);
+      const currentTime = new Date();
+      const timeDifference = Math.floor((currentTime - loadTime) / 1000 / 60); // Czas w minutach od załadowania strony
+
+      const weatherInfo = `
+        <p>Temperatura: ${weather.temp_C}°C</p>
+        <p>Wiatr: ${weather.windspeedKmph} km/h ${weather.winddir16Point}</p>
+        <p>Widoczność: ${weather.visibility} km</p>
+        <p>Opad: ${weather.precipMM} mm</p>
+        <p>Zachmurzenie: ${weather.cloudcover}%</p>
+        <p>Wilgotność: ${weather.humidity} %</p>
+        <p>Ciśnienie: ${weather.pressure} hPa</p>
+        <p>Temperatura odczuwalna: ${weather.temp_F}°F</p>
+        <p>Godzina pobrania danych pogodowych: ${loadTime.toLocaleString()}</p>
+        <p>Czas od pobrania danych: ${timeDifference} minut(y)</p>
+      `;
+      
+      document.getElementById("weatherInfo").innerHTML = weatherInfo;
+    })
+    .catch(error => console.error('Error fetching weather data:', error));
+}
+
+// Uruchom funkcję na przykład co 10 minut
+setInterval(getWeather, 10 * 60 * 1000); // 10 minut
 
     // Fetch flight plans (mocked example)
     function getFlightPlans() {
