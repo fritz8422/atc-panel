@@ -222,32 +222,40 @@
   </div>
 </div>
 
-<div class="card">
-  <h2>📜 Zgłoszone plany lotu</h2>
-  <ul id="plansList">Ładowanie planów...</ul>
+<div id="flightPlans" class="container">
+  <h2>📋 Plany lotu</h2>
 </div>
 
-<script>
-  fetch("https://3f7c8888-058b-4206-9ea9-fe3178d00585-00-2sld38k0w8soq.riker.replit.dev/api/flightplans")
-    .then(res => res.json())
-    .then(plans => {
-      const list = document.getElementById("plansList");
-      list.innerHTML = "";
-      plans.reverse().forEach(plan => {
-        const item = document.createElement("li");
-        item.textContent = `${plan.callsign}: ${plan.departure} → ${plan.arrival} o ${plan.departureTime} (${plan.aircraft}) - ${plan.submittedBy}`;
-        list.appendChild(item);
-      });
-    })
-    .catch(() => {
-      document.getElementById("plansList").innerText = "Błąd ładowania planów.";
-    });
-</script>
 
     </div>
   </div>
 
   <script>
+     async function fetchFlightPlans() {
+    const res = await fetch("https://3f7c8888-058b-4206-9ea9-fe3178d00585-00-2sld38k0w8soq.riker.replit.dev/api/flightplans");
+    const plans = await res.json();
+
+    const container = document.getElementById("flightPlans");
+    container.innerHTML = ""; // Czyścimy
+
+    plans.forEach(plan => {
+      const el = document.createElement("div");
+      el.className = "card";
+      el.innerHTML = `
+        <h3>🛫 ${plan.callsign}</h3>
+        <p><strong>Odlot:</strong> ${plan.departure}</p>
+        <p><strong>Przylot:</strong> ${plan.arrival}</p>
+        <p><strong>Typ:</strong> ${plan.aircraft}</p>
+        <p><strong>Godzina:</strong> ${plan.departureTime}</p>
+        <p><strong>Zgłoszone przez:</strong> ${plan.submittedBy}</p>
+      `;
+      container.appendChild(el);
+    });
+  }
+
+  // Odświeżaj co 10 sekund
+  setInterval(fetchFlightPlans, 10000);
+  fetchFlightPlans();
     const correctKey = "TOPR-Sigma1";
   
     function login() {
