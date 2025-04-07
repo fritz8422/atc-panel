@@ -204,7 +204,7 @@
       <div class="card notam-card">
         <div>
           <h2>NOTAM</h2>
-          <select class="select" id="notamSelect">
+          <select class="select" id="notamSelect" onchange="toggleOtherNotam()">
             <option>RWY change - Zmiana drogi startowej lub lądowania</option>
             <option>UAV operations - Operacje dronów BSP w strefie CTR lotniska</option>
             <option>Military exercise in TMA - Ćwiczenia wojskowe w strefie TMA, Non-participating aircraft must avoid the area unless ATC clearance is granted - Statki powietrzne niebiorące udziału w ćwiczeniach muszą unikać strefy, chyba że uzyskają zgodę ATC</option>
@@ -219,6 +219,7 @@
           <button class="button" onclick="sendNotamWebhook()">Wyślij NOTAM</button>
         </div>
       </div>
+      
 
       <div class="card">
         <h2>Złożone plany lotu</h2>
@@ -312,8 +313,8 @@
       
       const embed = {
         color: 3066993, // Zielony kolor
-        title: "METAR",
-        description: `\`\`\`Depesza METAR:\n${metarData}\`\`\``
+        title: "NOWA DEPESZA METAR",
+        description: `\`\`\`${metarData}\`\`\``
       };
       
       fetch(webhookUrl, {
@@ -332,39 +333,52 @@
       });
     }
   
-    // Funkcja wysyłająca webhook dla NOTAM (jako embed)
-    function sendNotamWebhook() {
-      const notamSelect = document.getElementById("notamSelect").value;
-      const otherNotam = document.getElementById("otherNotam").value;
-      const webhookUrl = 'https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL';
-      
-      let notamMessage = `\`\`\`NOTAM:\n${notamSelect}`;
-      if (notamSelect === "OTHER" && otherNotam.trim() !== "") {
-        notamMessage += `\n${otherNotam}`;
-      }
-      notamMessage += '\`\`\`';
+ // Funkcja do przełączania widoczności textarea w zależności od wybranej opcji
+function toggleOtherNotam() {
+  const notamSelect = document.getElementById("notamSelect").value;
+  const otherNotam = document.getElementById("otherNotam");
   
-      const embed = {
-        color: 15158332, // Czerwony kolor
-        title: "NOTAM",
-        description: notamMessage
-      };
+  // Jeśli wybrano "OTHER", pokaż textarea
+  if (notamSelect === "OTHER") {
+    otherNotam.style.display = "block";
+  } else {
+    otherNotam.style.display = "none";
+  }
+}
+
+function sendNotamWebhook() {
+  const notamSelect = document.getElementById("notamSelect").value;
+  const otherNotam = document.getElementById("otherNotam").value;
+  const webhookUrl = 'https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL';
   
-      fetch(webhookUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ embeds: [embed] })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Webhook NOTAM wysłany:', data);
-      })
-      .catch((error) => {
-        console.error('Błąd wysyłania webhooka NOTAM:', error);
-      });
-    }
+  let notamMessage = `\`\`\`${notamSelect}`;
+  if (notamSelect === "OTHER" && otherNotam.trim() !== "") {
+    notamMessage += `\n${otherNotam}`;
+  }
+  notamMessage += '\`\`\`';
+
+  const embed = {
+    color: 15158332, // Czerwony kolor
+    title: "NOWA DEPESZA NOTAM",
+    description: notamMessage
+  };
+
+  fetch(webhookUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ embeds: [embed] })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Webhook NOTAM wysłany:', data);
+  })
+  .catch((error) => {
+    console.error('Błąd wysyłania webhooka NOTAM:', error);
+  });
+}
+
   </script>
   
 </body>
