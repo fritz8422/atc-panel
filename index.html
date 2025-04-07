@@ -100,72 +100,137 @@
     .structure-card {
       margin-top: 20px;
     }
+
+    /* Style for the login form */
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #1a202c;
+    }
+
+    .login-card {
+      background-color: #2d3748;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      width: 300px;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #2d3748;
+      color: white;
+    }
+
+    .login-button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .login-button:hover {
+      background-color: #45a049;
+    }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="header">
-      <h1>Panel służby kontroli ruchu lotniczego</h1>
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-container">
+    <div class="login-card">
+      <h2>Panel Logowania</h2>
+      <input type="text" id="accessKey" class="login-input" placeholder="Wprowadź klucz dostępu" />
+      <button class="login-button" onclick="login()">Zaloguj</button>
     </div>
+  </div>
 
-    <!-- Zegar w osobnym kafelku -->
-    <div class="clock-card">
-      <h2>Zegar</h2>
-      <div id="clock" class="clock"></div>
-    </div>
-
-    <!-- Struktura kontroli -->
-    <div class="structure-card card">
-      <h2>Struktura kontroli:</h2>
-      <div style="font-size: 0.9rem;">🟦Warszawa Radar: Kontroluje przestrzeń powietrzną na dużych wysokościach, zarządzając lotami między regionami.</div>
-      <div style="font-size: 0.9rem;">🟩Kraków Approach: Kieruje lotami z wyższych wysokości do podejścia w pobliżu lotniska Kraków.</div>
-      <div style="font-size: 0.9rem;">🟩Kraków Tower: Odpowiada za starty i lądowania na lotnisku Kraków oraz ruch na płycie lotniska.</div>
-      <div style="font-size: 0.9rem;">🟧Nowy Targ Radio: Koordynuje ruch powietrzny w okolicach Nowego Targu, szczególnie na niskich wysokościach.</div>
-      <div style="font-size: 0.9rem;">🟧Nowy Targ Ground: Zarządza ruchem i obsługą naziemną statków na lotnisku Nowy Targ.</div>
-    </div>
-
-    <div class="card">
-      <h2>Depesza METAR</h2>
-      <textarea class="textarea" id="metarInput" placeholder="Wprowadź depeszę METAR..."></textarea>
-      <button class="button" onclick="sendMetarWebhook()">Wyślij do Discorda</button>
-    </div>
-
-    <div class="card">
-      <h2>Aktualna pogoda - Nowy Targ</h2>
-      <div id="weatherInfo">
-        <p>Ładowanie danych...</p>
+  <!-- Main Content, initially hidden -->
+  <div id="mainContent" style="display: none;">
+    <div class="container">
+      <div class="header">
+        <h1>Panel służby kontroli ruchu lotniczego</h1>
       </div>
-    </div>
 
-    <div class="card notam-card">
-      <div>
-        <h2>NOTAM</h2>
-        <select class="select" id="notamSelect">
-          <option>RWY change - Zmiana drogi startowej lub lądowania</option>
-          <option>UAV operations - Operacje dronów BSP w strefie CTR lotniska</option>
-          <option>Military exercise in TMA - Ćwiczenia wojskowe w strefie TMA, Non-participating aircraft must avoid the area unless ATC clearance is granted - Statki powietrzne niebiorące udziału w ćwiczeniach muszą unikać strefy, chyba że uzyskają zgodę ATC</option>
-          <option>Glider operations - Operacje szybowców w strefie TMA</option>
-          <option>Training flights - Loty treningowe</option>
-          <option>HEMS/ASAR Pilots are advised to exercise caution due to frequent low-level helicopter traffic - Piloci są ostrzegani o częstym ruchu śmigłowców na niskich wysokościach.</option>
-          <option>OTHER</option>
-        </select>
-        <textarea class="textarea" id="otherNotam" placeholder="Wpisz inne informacje..." style="display: none;"></textarea>
+      <!-- Zegar w osobnym kafelku -->
+      <div class="clock-card">
+        <h2>Zegar</h2>
+        <div id="clock" class="clock"></div>
       </div>
-      <div>
-        <button class="button" onclick="sendNotamWebhook()">Wyślij NOTAM</button>
-      </div>
-    </div>
 
-    <div class="card">
-      <h2>Złożone plany lotów (ostatnia godzina)</h2>
-      <div id="flightPlans">
-        <p>Ładowanie danych...</p>
+      <!-- Struktura kontroli -->
+      <div class="structure-card card">
+        <h2>Struktura kontroli:</h2>
+        <div style="font-size: 0.9rem;">🟦Warszawa Radar: Kontroluje przestrzeń powietrzną na dużych wysokościach, zarządzając lotami między regionami.</div>
+        <div style="font-size: 0.9rem;">🟩Kraków Approach: Kieruje lotami z wyższych wysokości do podejścia w pobliżu lotniska Kraków.</div>
+        <div style="font-size: 0.9rem;">🟩Kraków Tower: Odpowiada za starty i lądowania na lotnisku Kraków oraz ruch na płycie lotniska.</div>
+        <div style="font-size: 0.9rem;">🟧Nowy Targ Radio: Koordynuje ruch powietrzny w okolicach Nowego Targu, szczególnie na niskich wysokościach.</div>
+        <div style="font-size: 0.9rem;">🟧Nowy Targ Ground: Zarządza ruchem i obsługą naziemną statków na lotnisku Nowy Targ.</div>
+      </div>
+
+      <div class="card">
+        <h2>Depesza METAR</h2>
+        <textarea class="textarea" id="metarInput" placeholder="Wprowadź depeszę METAR..."></textarea>
+        <button class="button" onclick="sendMetarWebhook()">Wyślij do Discorda</button>
+      </div>
+
+      <div class="card">
+        <h2>Aktualna pogoda - Nowy Targ</h2>
+        <div id="weatherInfo">
+          <p>Ładowanie danych...</p>
+        </div>
+      </div>
+
+      <div class="card notam-card">
+        <div>
+          <h2>NOTAM</h2>
+          <select class="select" id="notamSelect">
+            <option>RWY change - Zmiana drogi startowej lub lądowania</option>
+            <option>UAV operations - Operacje dronów BSP w strefie CTR lotniska</option>
+            <option>Military exercise in TMA - Ćwiczenia wojskowe w strefie TMA, Non-participating aircraft must avoid the area unless ATC clearance is granted - Statki powietrzne niebiorące udziału w ćwiczeniach muszą unikać strefy, chyba że uzyskają zgodę ATC</option>
+            <option>Glider operations - Operacje szybowców w strefie TMA</option>
+            <option>Training flights - Loty treningowe</option>
+            <option>HEMS/ASAR Pilots are advised to exercise caution due to frequent low-level helicopter traffic - Piloci są ostrzegani o częstym ruchu śmigłowców na niskich wysokościach.</option>
+            <option>OTHER</option>
+          </select>
+          <textarea class="textarea" id="otherNotam" placeholder="Wpisz inne informacje..." style="display: none;"></textarea>
+        </div>
+        <div>
+          <button class="button" onclick="sendNotamWebhook()">Wyślij NOTAM</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Złożone plany lotów (ostatnia godzina)</h2>
+        <div id="flightPlans">
+          <p>Ładowanie danych...</p>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
+    const correctKey = "TOPR-Sigma1"; 
+
+    function login() {
+      const enteredKey = document.getElementById("accessKey").value;
+      if (enteredKey === correctKey) {
+        // Ukryj ekran logowania, pokaż główny panel
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("mainContent").style.display = "block";
+      } else {
+        alert("Błędny klucz dostępu!");
+      }
+    }
+
     // Fetch weather data for Nowy Targ
     function getWeather() {
       fetch("https://wttr.in/Nowy%20Targ?format=j1")
@@ -195,79 +260,24 @@
       document.getElementById("flightPlans").innerHTML = flightPlansHtml;
     }
 
-    // Send METAR to Discord via webhook as an embed with codeblock formatting
-    function sendMetarWebhook() {
-      const metar = document.getElementById("metarInput").value;
-      const webhookUrl = "https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL";
-      const payload = {
-        embeds: [
-          {
-            title: "NEW METAR",
-            description: "```" + metar + "```", // Text formatted in codeblock
-            color: 3066993
-          }
-        ]
-      };
+    // Call the functions when the page loads
+    window.onload = function() {
+      getWeather();
+      getFlightPlans();
+      startClock();
+    };
 
-      fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-    }
-
-    // Send NOTAM to Discord via webhook as an embed with codeblock formatting
-    function sendNotamWebhook() {
-      const notam = document.getElementById("notamSelect").value;
-      let additionalInfo = "";
-      if (notam === "OTHER") {
-        additionalInfo = document.getElementById("otherNotam").value;
+    // Clock function
+    function startClock() {
+      function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById("clock").textContent = `${hours}:${minutes}:${seconds}`;
       }
-      const webhookUrl = "https://discord.com/api/webhooks/1357001398843080811/4m0YVv8RT0fXsXhwsALXj882p-UtQBDR_jfNOuJJqPk5bduKAx8evvHBOp1P_GmREKJL";
-      const payload = {
-        embeds: [
-          {
-            title: "NEW NOTAM",
-            description: "```" + `${notam}\n${additionalInfo}` + "```", // Text formatted in codeblock
-            color: 3447003
-          }
-        ]
-      };
-
-      fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
+      setInterval(updateClock, 1000);
     }
-
-    // Display clock
-    function updateClock() {
-      const now = new Date();
-      const time = now.toLocaleTimeString();
-      document.getElementById("clock").innerText = `Aktualny czas: ${time}`;
-    }
-
-    // Show "OTHER" textarea when "OTHER" option is selected
-    document.getElementById("notamSelect").addEventListener("change", function() {
-      const otherNotam = document.getElementById("otherNotam");
-      if (this.value === "OTHER") {
-        otherNotam.style.display = "block";
-      } else {
-        otherNotam.style.display = "none";
-      }
-    });
-
-    // Initial call to load weather and flight plans
-    getWeather();
-    getFlightPlans();
-
-    // Update clock every second
-    setInterval(updateClock, 1000);
   </script>
 
 </body>
