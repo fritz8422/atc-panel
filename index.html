@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel ATC</title>
+  <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/6938/6938996.png">
   <style>
     body {
       font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -314,13 +315,20 @@
         <div>
           <h2>NOTAM</h2>
           <select class="select" id="notamSelect" onchange="toggleOtherNotam()">
-            <option>RWY change - Zmiana drogi startowej lub lądowania</option>
+            <option>RWY CLOSED - unusable for aircraft operations due to technical work. Pas zamknięty z powodu prac technicznych.</option>
+            <option>Landings not avabile due to weather conditions. Brak możliwości lądowania z przyczyn pogodowych.</option>
+            <option>Weather conditions below the minimums prescribed by regulation -  PIC Flying at own risk - Warunki pogodowe poniżej minumów operacyjnych - lot na własne ryzyko.</option>
+            <option>LOW PASS, TOUCH AND GO AND FLIGHT IN TRAFFIC PATTERN IS PROHIBITED FOR ACFT - Manewry low pass, konwojer i loty po kręgach zabronione z przyczyn operacyjnych</option>
+            <option>LOW PASS, TOUCH AND GO AND FLIGHT IN TRAFFIC PATTERN IS ALLOWED - Manewry low pass, konwojer i loty po kręgach dozwolone w CTR</option>
+            <option>RWY CHANGE - Zmiana drogi startowej lub lądowania, STBY FOR FURTHER INFORMATION, OCZEKUJ NA DALSZĄ INFORMACJĘ</option>
+            <option>ACTIVE RUNWAY - RWY 12 - Aktywny pas do startów i lądowania</option>
+            <option>ACTIVE RUNWAY - RWY 30 - Aktywny pas do startów i lądowania</option>
             <option>UAV operations - Operacje dronów BSP w strefie CTR lotniska</option>
             <option>Military exercise in TMA - Ćwiczenia wojskowe w strefie TMA, Non-participating aircraft must avoid the area unless ATC clearance is granted - Statki powietrzne niebiorące udziału w ćwiczeniach muszą unikać strefy, chyba że uzyskają zgodę ATC</option>
             <option>Glider operations - Operacje szybowców w strefie TMA</option>
             <option>Training flights - Loty treningowe</option>
             <option>HEMS/ASAR Pilots are advised to exercise caution due to frequent low-level helicopter traffic - Piloci są ostrzegani o częstym ruchu śmigłowców na niskich wysokościach.</option>
-            <option>OTHER</option>
+            <option>OTHER/GROUND SERVICE INFORMATION</option>
           </select>
           <textarea class="textarea" id="otherNotam" placeholder="Wpisz inne informacje..." style="display: none;"></textarea>
         </div>
